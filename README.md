@@ -1,6 +1,6 @@
 # extracteur-donnees-LCL
 
-L'extracteur de données LCL permet de mettre sous la forme d'un unique fichier .csv les données bancaires des relevés de comptes LCL qui sont au format .pdf.
+L'extracteur de données LCL permet de mettre sous la forme d'un unique fichier .csv les données bancaires séparées dans différents relevés de comptes LCL au format .pdf.
 
 Le fichier .csv final comporte quatre colonnes : objet (object), date (datetime64), debit (float64), credit (float64).
 
