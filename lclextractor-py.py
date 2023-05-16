@@ -2,7 +2,7 @@
 """
 Created on Tue May 16 13:43:52 2023
 
-@author: Maxime
+@author: Max-Bld
 """
 
 #%% 1. IMPORT
