@@ -18,7 +18,7 @@ import os
 base_path=input("Path directory containing the bank statements:\n")
 
 if base_path=='':
-    base_path = "C:\\"
+    base_path = "C:\_Data-Max\Finances\LCL\__releves_de_compte\\"
 else :
     pass
 
@@ -40,7 +40,7 @@ for f in file_list:
     all_names.append(name) #not used
     all_data.append(data)
 
-#List of dfs
+#%%List of dfs
 
 data_flat=[]
 for sublist in all_data:
@@ -49,14 +49,18 @@ for sublist in all_data:
         
 #%% 3. RIGHT HEADER
 
-#New header with first row
+#New header with first row with exception 3(found in all)
 
 for n in range(0, len(data_flat)):
-    new_header=data_flat[n].iloc[0]
-    data_flat[n]=data_flat[n][1:]
-    data_flat[n].columns=new_header
+    if any(data_flat[n].columns.str.contains('DATE'))==True:
+       pass
+    else :
+        new_header=data_flat[n].iloc[0]
+        data_flat[n]=data_flat[n][1:]
+        data_flat[n].columns=new_header
+ 
     
-# Handling exception 1 (found in 2021):
+#%% Handling exception 1 (found in 2021):
 
 for n in range(0, len(data_flat)):
     if all(data_flat[n].columns.str.contains('ECRITURES'))==False:
@@ -94,7 +98,7 @@ for n in range(0, len(data_flat)):
     else:
         pass
         
-#%%%Drop useless unnamed columns
+#Drop useless unnamed columns
 
 for n in range(0, len(data_dropped_0)):
     data_dropped_0[n]=data_dropped_0[n][['DATE LIBELLE', 'VALEUR', 'DEBIT', 'CREDIT']]
@@ -199,8 +203,15 @@ data_rows_last=data_rows_pos_neg.loc[~mask]
 data_index=data_rows_last.reset_index(drop=True)
 
 print(data_index.info())
-print("Process Finished.")
 
 #Export
 
-data_index.to_csv("C:\_Data-Max\Finances\LCL\__releves_de_compte\comptes_full.csv")
+data_index.to_csv(base_path + "comptes_full.csv")
+
+print("Process Finished.")
+
+#%% COMMENTS
+
+#exception 1:
+#exception 2: 
+#exception 3: first line contains already "DATE" and columns name do not need to be changed
