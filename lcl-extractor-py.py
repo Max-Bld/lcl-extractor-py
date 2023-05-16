@@ -19,7 +19,7 @@ import os
 base_path=input("Path directory containing the bank statements:\n")
 
 if base_path=='':
-    base_path = "C:\_Data-Max\Finances\LCL\__releves_de_compte\\"
+    base_path = "C:\\"
 else :
     pass
 
