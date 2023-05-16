@@ -14,7 +14,7 @@ The next step is to categorize the 'objet' values (e.g., categories such as "gro
 
 ===FR===
 
-lcl-extractor-py met sous la forme d'un unique fichier .csv les différents relevés de comptes LCL au format .pdf.
+lcl-extractor-py met sous la forme d'un unique fichier .csv les différents relevés de comptes LCL séparés au format .pdf.
 
 Le fichier .csv final comporte quatre colonnes : 'objet' (object type), 'date' (datetime64 type), 'debit' (float64 type) et 'credit' (float64 type).
 
