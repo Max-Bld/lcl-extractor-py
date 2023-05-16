@@ -14,12 +14,18 @@ import os
 #%% 2. SCRAPE
 #%%%List of file paths
 
-base_path = ("C:\_Data-Max\Finances\LCL\__releves_de_compte\\")
+
+base_path=input("Path directory containing the bank statements:\n")
+
+if base_path=='':
+    base_path = "C:\\"
+else :
+    pass
 
 file_list=[]
 
 for path in os.listdir(base_path):
-    if os.path.isfile(os.path.join(base_path, path)) and ((path.startswith("COMPTEDEDEPTS_05431191745_"))):
+    if os.path.isfile(os.path.join(base_path, path)) and ((path.startswith("COMPTEDEDEPTS_"))):
         file_list.append(base_path+path)
         
 
