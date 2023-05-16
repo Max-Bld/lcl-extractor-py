@@ -12,7 +12,8 @@ import pandas as pd
 import os
 
 #%% 2. SCRAPE
-#%%%List of file paths
+
+#List of each file path
 
 
 base_path=input("Path directory containing the bank statements:\n")
@@ -203,12 +204,11 @@ data_rows_last=data_rows_pos_neg.loc[~mask]
 data_index=data_rows_last.reset_index(drop=True)
 
 print(data_index.info())
+print("Process Finished.")
 
 #Export
 
 data_index.to_csv(base_path + "comptes_full.csv")
-
-print("Process Finished.")
 
 #%% COMMENTS
 
