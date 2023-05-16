@@ -1,8 +1,8 @@
-# extracteur-donnees-LCL
+# lcl-extractor-py
 
 ===EN===
 
-extracteur-donnees-LCL returns a unique .csv file from separated LCL bank statements pdfs.
+lcl-extractor-py returns a unique .csv file from separated LCL bank statements pdfs.
 
 The exported .csv file is made up of four columns : 'objet' (object type), 'date' (datetime64 type), 'debit' (float64 type) and 'credit' (float64 type).
 
@@ -14,7 +14,7 @@ The next step is to categorize the 'objet' values (e.g., categories such as "gro
 
 ===FR===
 
-L'extracteur de données LCL met sous la forme d'un unique fichier .csv les différents relevés de comptes LCL au format .pdf.
+lcl-extractor-py met sous la forme d'un unique fichier .csv les différents relevés de comptes LCL au format .pdf.
 
 Le fichier .csv final comporte quatre colonnes : 'objet' (object type), 'date' (datetime64 type), 'debit' (float64 type) et 'credit' (float64 type).
 
