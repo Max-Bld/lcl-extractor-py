@@ -13,24 +13,24 @@ import os
 
 #%% 2. SCRAPE
 
-#List of each file path
+    #List of each file path
 
 
 base_path=input("Path directory containing the bank statements:\n")
 
 if base_path=='':
-    base_path = "C:\\"
+    base_path = "C:\_Data-Max\Finances\LCL\__releves_de_compte\\"
 else :
     pass
 
 file_list=[]
 
 for path in os.listdir(base_path):
-    if os.path.isfile(os.path.join(base_path, path)) and ((path.startswith("COMPTEDEDEPTS_"))):
+    if os.path.isfile(os.path.join(base_path, path)) and ((path.startswith("COMPTEDEDEPTS_05431191745_2023"))):
         file_list.append(base_path+path)
         
 
-#List of lists of dfs
+    #List of lists of dfs
 
 all_names=[]
 all_data=[]
@@ -50,7 +50,7 @@ for sublist in all_data:
         
 #%% 3. RIGHT HEADER
 
-#New header with first row with exception 3(found in all)
+    #New header with first row with exception 3(found in all)
 
 for n in range(0, len(data_flat)):
     if any(data_flat[n].columns.str.contains('DATE'))==True:
@@ -73,7 +73,7 @@ for n in range(0, len(data_flat)):
         
 #%% 4. RIGHT COLUMNS
 
-#Handling exception 2 (found in 2020):
+    #Handling exception 2 (found in 2020):
 
 for n in range(0, len(data_flat)):
     if data_flat[n].columns[0]==('DATEK6EXTP25 LIBELLE'):
@@ -81,7 +81,7 @@ for n in range(0, len(data_flat)):
     else:
         pass
         
-#Rename Dfs col 'date' to 'date libelle'
+    #Rename Dfs col 'date' to 'date libelle'
 
 for n in range(0, len(data_flat)):
     if data_flat[n].columns.any() == 'DATE':
@@ -89,7 +89,7 @@ for n in range(0, len(data_flat)):
     else:
         pass
         
-#Drop useless dfs off the list
+    #Drop useless dfs off the list
 
 data_dropped_0=[]
 
@@ -99,12 +99,12 @@ for n in range(0, len(data_flat)):
     else:
         pass
         
-#Drop useless unnamed columns
+    #Drop useless unnamed columns
 
 for n in range(0, len(data_dropped_0)):
     data_dropped_0[n]=data_dropped_0[n][['DATE LIBELLE', 'VALEUR', 'DEBIT', 'CREDIT']]
 
-#Rename remaining columns
+    #Rename remaining columns
 
 data_renamed=data_dropped_0
 
@@ -120,29 +120,29 @@ for n in range(0, len(data_renamed)):
 
 data_concat=pd.concat(data_dropped_0)
 
-#%% 6. STANDARDIZATION
+#%% 6. NORMALIZATION
 
-#%%% 6.1. CONVERT 'debit' AND 'credit' TO FLOAT64
+    #%%% 6.1. CONVERT 'debit' AND 'credit' TO FLOAT64
 
 
 
 data_rows_solde=data_concat
 
-#standardize
+        #Normalize
 
 data_rows_solde['debit']=data_rows_solde['debit'].str.replace(',', '.')
 data_rows_solde['credit']=data_rows_solde['credit'].str.replace(',', '.')
 data_rows_solde['debit']=data_rows_solde['debit'].str.replace(' ', '')
 data_rows_solde['credit']=data_rows_solde['credit'].str.replace(' ', '')
   
-#Convert to float
+        #Convert to float
 
 data_rows_solde['debit']=pd.to_numeric(data_rows_solde['debit'], errors='coerce')
 data_rows_solde['credit']=pd.to_numeric(data_rows_solde['credit'], errors='coerce')
 
-#%%% 6.2. STANDARDIZE 'objet'
+    #%%% 6.2. Normalize 'objet'
 
-#Delete numeric characters in 'objet'
+        #Delete numeric characters in 'objet'
 
 data_rows_objet=data_rows_solde
 data_rows_objet['objet']=data_rows_objet['objet'].str.replace("\d+", "")
@@ -151,18 +151,18 @@ data_rows_objet['objet']=data_rows_objet['objet'].str.replace(".", "")
 data_rows_objet['objet']=data_rows_objet['objet'].str.replace(":", "")
 data_rows_objet['objet']=data_rows_objet['objet'].str.replace("\n", "")
 
-#Upper case objet
+        #Upper case objet
 
 data_rows_objet['objet']=data_rows_objet['objet'].str.lower()
 
-#%%% 6.3. CONVERT 'date' TO DATETIME64
+    #%%% 6.3. CONVERT 'date' TO DATETIME64
 
-#Replace . by /
+        #Replace . by /
 
 data_time=data_rows_objet
 data_time['date']=data_time['date'].str.replace('.','/')
 
-#Convert to datetime
+        #Convert to datetime
 
 data_time['date']=pd.to_datetime(data_time['date'], format='%d/%m/%y', errors='coerce')
 
@@ -170,38 +170,46 @@ data_time['date']=pd.to_datetime(data_time['date'], format='%d/%m/%y', errors='c
 
 data_filled=data_time
 
-#Replace NaN by 0 in debit and credit cols
+    #Replace NaN by 0 in debit and credit cols
 
 data_filled['debit']=data_filled['debit'].fillna(0)
 data_filled['credit']=data_filled['credit'].fillna(0)
 
-#%Replace NaT with the previous upper value
+    #Replace NaT with the previous upper value
 
 data_filled['date']=data_filled['date'].fillna(method='ffill')
 data_filled['objet']=data_filled['objet'].fillna(method='ffill')
 
 #%% 8. DELETE ROWS
 
-#Delete rows containing 'solde' or 'totaux' in ['objet'] col
+    #Delete rows containing 'solde' or 'totaux' in ['objet'] col
 
 data_delete=data_filled
-data_delete=data_delete[data_delete['objet'].str.contains("SOLDE")==False]
+data_delete=data_delete[data_delete['objet'].str.contains("solde    ")==False]
 
-#Delete rows with both positive and negative
+    #Delete rows with both positive and negative
 
 data_rows_pos_neg=data_delete[~((data_delete['debit'] > 0) & 
                       (data_delete['credit'] > 0))]
 
-#Delete rows with redundant info
+    #Delete rows with redundant info
 
 mask = (data_rows_pos_neg['objet'].str.len() == 5)
 data_rows_last=data_rows_pos_neg.loc[~mask]
+
+    #Delete rows with both 0 value in debit and credit
+
+data_zero=data_rows_last[~((data_rows_last["debit"]==0) & (data_rows_last["credit"]==0))]
+
+    #Delete rows with a null objet value
+
+data_null=data_zero[~(data_zero['objet']=='')]
 
 #%% 9. EXPORT
 
 #Reset index
 
-data_index=data_rows_last.reset_index(drop=True)
+data_index=data_null.reset_index(drop=True)
 
 print(data_index.info())
 print("Process Finished.")
