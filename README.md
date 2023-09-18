@@ -1,6 +1,8 @@
 # LCL Data Extractor
 
-*Note: This is my first Python data analysis-oriented project!*
+*Note: This is my first Python data analysis-oriented project*
+
+![bank](https://img.freepik.com/photos-gratuite/homme-tenant-carte-credit-main-entrant-code-securite-aide-telephone-intelligent-clavier-ordinateur-portable-concept-magasinage-ligne_1423-22.jpg?w=740&t=st=1695044881~exp=1695045481~hmac=32e01969b76374242df28d4be4fac006ad14e25a999fdbd21b99c6c668859b5c)
 
 ## (FR)
 
